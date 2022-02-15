@@ -5,6 +5,13 @@ import mainRouter from "./src/routes/main";
 const app = express();
 const port = 3000;
 
+app.use(express.json());
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
+
 app.listen(port, async () => {
   console.log(`App running on port ${port}.`);
   app.use("/", mainRouter);
