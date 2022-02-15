@@ -1,8 +1,10 @@
-import { User } from "../../types/user";
 import Joi from "joi";
 
-export type RegisterUserRequest = Omit<User, "_id"> & {
+export type RegisterUserRequest = {
+  nickname: string;
+  password: string;
   repeatPassword: string;
+  email: string;
 };
 
 const validationSchema = Joi.object<RegisterUserRequest>({
