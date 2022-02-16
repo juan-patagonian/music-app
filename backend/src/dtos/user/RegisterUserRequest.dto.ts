@@ -10,7 +10,7 @@ export type RegisterUserRequest = {
 const validationSchema = Joi.object<RegisterUserRequest>({
   nickname: Joi.string().alphanum().min(5).max(20).required(),
   password: Joi.string().min(8).max(30).required(),
-  repeatPassword: Joi.ref("password"),
+  repeatPassword: Joi.any().required().equal(Joi.ref("password")),
   email: Joi.string().email().required(),
 });
 

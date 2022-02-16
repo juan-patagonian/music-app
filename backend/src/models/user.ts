@@ -11,12 +11,16 @@ const UserSchema = new Schema<UserT>({
   salt: { type: String, required: true },
 });
 
-UserSchema.pre("save", async function (next) {
+UserSchema.pre("validate", async function (next) {
   const salt = await bcrypt.genSalt(SALT_ROUNDS);
   const hash = await bcrypt.hash(this.password, salt);
   this.password = hash;
   this.salt = salt;
   next();
 });
+
+UserSchema.methods.isValidPassword = async function (inputPassword: string) {
+  return bcrypt.compare(inputPassword, this.password);
+};
 
 export const User = model<UserT>("User", UserSchema);

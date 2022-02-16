@@ -1,62 +1,55 @@
 import passport from "passport";
-import passportLocal from "passport-local";
-import passportJwt from "passport-jwt";
-import { UserModel } from "../../models/user";
-import { JWT_SECRET } from "../util/secrets";
+import { Strategy as LocalStrategy } from "passport-local";
+import { Strategy as JWTStrategy, ExtractJwt } from "passport-jwt";
+import { jwtKey } from "../../config/jwt";
+import { User } from "../../models/user";
 
-const LocalStrategy = passportLocal.Strategy;
-const JwtStrategy = passportJwt.Strategy;
-const ExtractJwt = passportJwt.ExtractJwt;
-
+// User login strategy
 passport.use(
   new LocalStrategy(
-    { usernameField: "username" },
-    (username, password, done) => {
-      UserModel.findOne(
-        { username: username.toLowerCase() },
-        (err, user: any) => {
-          if (err) {
-            return done(err);
-          }
-          if (!user) {
-            return done(undefined, false, {
-              message: `username ${username} not found.`,
-            });
-          }
-          user.comparePassword(password, (err: Error, isMatch: boolean) => {
-            if (err) {
-              return done(err);
-            }
-            if (isMatch) {
-              return done(undefined, user);
-            }
-            return done(undefined, false, {
-              message: "Invalid username or password.",
-            });
-          });
+    {
+      usernameField: "email",
+      passwordField: "password",
+    },
+    async (email: string, password: string, done) => {
+      try {
+        const user = await User.findOne({ email }).exec();
+
+        if (!user) {
+          return done(null, false, { message: "User not found" });
         }
-      );
+
+        const validate = await user.isValidPassword(password);
+
+        if (!validate) {
+          return done(null, false, { message: "Wrong Password" });
+        }
+
+        return done(null, user, {
+          message: "Logged in Successfully",
+        });
+      } catch (error) {
+        return done(error);
+      }
     }
   )
 );
 
+// JWT check strategy
 passport.use(
-  new JwtStrategy(
+  new JWTStrategy(
     {
+      secretOrKey: jwtKey,
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: JWT_SECRET,
     },
-    function (jwtToken, done) {
-      UserModel.findOne({ username: jwtToken.username }, function (err, user) {
-        if (err) {
-          return done(err, false);
-        }
-        if (user) {
-          return done(undefined, user, jwtToken);
-        } else {
-          return done(undefined, false);
-        }
-      });
+    async (token, done) => {
+      try {
+        return done(null, token.user);
+      } catch (error) {
+        done(error);
+      }
     }
   )
 );
+
+export default passport;

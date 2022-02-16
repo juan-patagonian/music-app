@@ -4,7 +4,6 @@ import Boom from "@hapi/boom";
 import { User } from "../../models/user";
 
 export const register = async (req: Request, res: Response) => {
-  console.log(req.body);
   const { error } = validateRequestBodyParams(req.body);
 
   if (error) {
