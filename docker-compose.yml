@@ -5,3 +5,11 @@ services:
     container_name: mongodb
     ports:
       - "27017:27017"
+  backend:
+    build:
+      dockerfile: Dockerfile
+      context: backend
+    depends_on:
+      - mongodb
+    ports:
+      - "3000:3000"
