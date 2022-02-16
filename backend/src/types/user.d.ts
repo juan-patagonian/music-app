@@ -4,5 +4,6 @@ export type User = {
   email: string;
   password: string;
   salt: string;
+  favoriteSongs: string[];
   isValidPassword: (password: string) => Promise<boolean>;
 };

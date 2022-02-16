@@ -9,6 +9,14 @@ const UserSchema = new Schema<UserT>({
   password: { type: String, required: true },
   email: { type: String, required: true },
   salt: { type: String, required: true },
+  favoriteSongs: {
+    type: [
+      {
+        type: String,
+      },
+    ],
+    required: true,
+  },
 });
 
 UserSchema.pre("validate", async function (next) {
@@ -16,6 +24,11 @@ UserSchema.pre("validate", async function (next) {
   const hash = await bcrypt.hash(this.password, salt);
   this.password = hash;
   this.salt = salt;
+  next();
+});
+
+UserSchema.pre("validate", async function (next) {
+  this.favoriteSongs = [];
   next();
 });
 
