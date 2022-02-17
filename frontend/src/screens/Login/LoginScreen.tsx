@@ -10,17 +10,23 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { login } from "../../services/auth.service";
+import { UserContext } from "../Auth/contexts/UserContext";
 
 export const LoginScreen = () => {
+  const userContext = React.useContext(UserContext);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const email = data.get("email") as string;
     const password = data.get("password") as string;
 
-    if (email && password) {
+    if (email && password && userContext) {
       try {
         await login(email, password);
+        const token = localStorage.getItem("user");
+        if (token) {
+          userContext.login(token);
+        }
       } catch (err) {
         console.log(err);
       }
