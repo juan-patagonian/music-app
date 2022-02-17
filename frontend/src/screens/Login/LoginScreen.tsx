@@ -17,11 +17,6 @@ export const LoginScreen = () => {
     const data = new FormData(event.currentTarget);
     const email = data.get("email") as string;
     const password = data.get("password") as string;
-    // eslint-disable-next-line no-console
-    console.log({
-      email,
-      password,
-    });
 
     if (email && password) {
       try {
