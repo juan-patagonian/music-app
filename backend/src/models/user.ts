@@ -17,9 +17,18 @@ const UserSchema = new Schema<UserT>({
     ],
     required: true,
   },
+  recentSearchTerms: {
+    type: [
+      {
+        text: { type: String, required: true },
+        createdAt: { type: Date, required: true },
+      },
+    ],
+    required: true,
+  },
 });
 
-UserSchema.pre("validate", async function (next) {
+UserSchema.pre("validate", async function (this: UserT, next) {
   const salt = await bcrypt.genSalt(SALT_ROUNDS);
   const hash = await bcrypt.hash(this.password, salt);
   this.password = hash;
@@ -27,8 +36,9 @@ UserSchema.pre("validate", async function (next) {
   next();
 });
 
-UserSchema.pre("validate", async function (next) {
+UserSchema.pre("validate", async function (this: UserT, next) {
   this.favoriteSongs = [];
+  this.recentSearchTerms = [];
   next();
 });
 
