@@ -1,5 +1,6 @@
 import axios from "axios";
 import { config } from "../constants/config";
+import { getSongsByIds } from "./spotify.service";
 
 const API_URL = config.API_URL;
 
@@ -18,4 +19,21 @@ const addToFavorites = async (id: string) => {
   );
 };
 
-export { addToFavorites };
+const getFavoriteSongs = async () => {
+  const userToken = localStorage.getItem("user");
+
+  const { data } = await axios.get<string[]>(
+    API_URL + "/user/getFavoriteSongs",
+    {
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+      },
+    }
+  );
+
+  const spotifySongsResponse = await getSongsByIds(data);
+
+  return spotifySongsResponse.data.tracks;
+};
+
+export { addToFavorites, getFavoriteSongs };

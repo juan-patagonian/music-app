@@ -103,4 +103,17 @@ const getSongsByName = async (name: string) => {
   return response.data;
 };
 
-export { getSpotifyAccessToken, getSongsByName, getNextSongs };
+const getSongsByIds = async (songIds: string[]) => {
+  const token = await getLocalToken();
+
+  return axios.get<{ tracks: Track[] }>("https://api.spotify.com/v1/tracks", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    params: {
+      ids: songIds.toString(),
+    },
+  });
+};
+
+export { getSpotifyAccessToken, getSongsByName, getNextSongs, getSongsByIds };

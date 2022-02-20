@@ -8,6 +8,7 @@ import GlobalStyles from "@mui/material/GlobalStyles";
 import Container from "@mui/material/Container";
 import { UserContext } from "../Auth/contexts/UserContext";
 import { SongSearch } from "./components/SongSearch";
+import { FavoritesList } from "./components/FavoritesList";
 
 export const HomeScreen = () => {
   const userContext = React.useContext(UserContext);
@@ -67,6 +68,7 @@ export const HomeScreen = () => {
         sx={{ pt: 8, pb: 6 }}
       >
         <SongSearch />
+        <FavoritesList />
       </Container>
     </React.Fragment>
   );
