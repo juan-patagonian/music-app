@@ -9,7 +9,12 @@ type Request = JWTRequest<never>;
 type SpotifyResponse = {
   access_token: string;
   token_type: string;
-  expires_in: number;
+  expires_in: string;
+};
+
+type TokenResponse = {
+  access_token: string;
+  expiration_date: Date;
 };
 
 export const getToken = async (req: Request, res: Response) => {
@@ -19,9 +24,19 @@ export const getToken = async (req: Request, res: Response) => {
     return Boom.forbidden("No authorized user provided");
   }
 
-  const token = await requestTokenFromSpotify();
+  const tokenData = await requestTokenFromSpotify();
 
-  res.send(token);
+  const tokenExpireDate = new Date();
+  tokenExpireDate.setSeconds(
+    tokenExpireDate.getSeconds() + Number(tokenData.expires_in)
+  );
+
+  const responseTokenData = {
+    access_token: tokenData.access_token,
+    expiration_date: tokenExpireDate,
+  } as TokenResponse;
+
+  res.json(responseTokenData);
 };
 
 const requestTokenFromSpotify = async () => {
@@ -43,7 +58,7 @@ const requestTokenFromSpotify = async () => {
       authOptions
     );
 
-    return spotifyApiResponse.data.access_token;
+    return spotifyApiResponse.data;
   } catch (err) {
     console.log(err);
     return null;
