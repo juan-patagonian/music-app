@@ -9,7 +9,6 @@ export const FavoritesList = () => {
   useEffect(() => {
     const fetchFavoriteSongs = async () => {
       const songs = await getFavoriteSongs();
-      console.log(songs);
       setFavoriteSongs(songs);
     };
     fetchFavoriteSongs();

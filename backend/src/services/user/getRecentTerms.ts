@@ -27,5 +27,5 @@ export const getRecentTerms = async (req: Request, res: Response) => {
     (term) => new Date(term.createdAt) > limitDate
   );
 
-  res.json(recentTerms);
+  res.json(recentTerms.map((term) => term.text));
 };

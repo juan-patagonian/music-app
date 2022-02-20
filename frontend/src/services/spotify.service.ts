@@ -58,7 +58,6 @@ const getSpotifyAccessToken = async () => {
 
     localStorage.setItem("spotify_token", JSON.stringify(response.data));
 
-    console.log(response.data);
     return response.data.access_token;
   }
 
@@ -97,8 +96,6 @@ const getSongsByName = async (name: string) => {
       },
     }
   );
-
-  console.log(response.data);
 
   return response.data;
 };
