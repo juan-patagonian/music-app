@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+export const a = () => <p>a</p>;
+/*import React, { useEffect, useState } from "react";
 import { getSpotifyAccessToken } from "../../services/spotify.service";
 import { HomeScreen } from "../Home/HomeScreen";
 import { LoginScreen } from "../Login/LoginScreen";
@@ -36,3 +37,4 @@ export const AuthScreen = () => {
     </UserContext.Provider>
   );
 };
+*/

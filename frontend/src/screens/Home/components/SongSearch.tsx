@@ -46,7 +46,9 @@ export const SongSearch = () => {
           }}
           variant="outlined"
         />
-        <Button type="submit">Get a Song</Button>
+        <Button type="submit" variant="outlined">
+          Find!
+        </Button>
       </Box>
       {searchResults && (
         <Box>

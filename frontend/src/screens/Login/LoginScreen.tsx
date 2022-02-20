@@ -3,33 +3,27 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { login } from "../../services/auth.service";
-import { UserContext } from "../Auth/contexts/UserContext";
+import useAuth from "../Auth/contexts/UserContext";
 
 export const LoginScreen = () => {
-  const userContext = React.useContext(UserContext);
+  const auth = useAuth();
+  const navigate = useNavigate();
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const email = data.get("email") as string;
     const password = data.get("password") as string;
 
-    if (email && password && userContext) {
-      try {
-        await login(email, password);
-        const token = localStorage.getItem("user");
-        if (token) {
-          userContext.login(token);
-        }
-      } catch (err) {
-        console.log(err);
-      }
+    if (email && password) {
+      await auth?.login(email, password);
+      navigate("/home", { replace: true });
     }
   };
 
