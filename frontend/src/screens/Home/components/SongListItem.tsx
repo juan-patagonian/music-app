@@ -16,8 +16,8 @@ export const SongListItem = ({ song }: Props) => {
   };
 
   return (
-    <Grid container>
-      <Grid item container direction="column" xs={10} spacing={2}>
+    <Grid container paddingY={1}>
+      <Grid item container direction="column" xs={10}>
         <Grid item>{song.name}</Grid>
         <Grid item>{song.artists[0].name}</Grid>
       </Grid>
