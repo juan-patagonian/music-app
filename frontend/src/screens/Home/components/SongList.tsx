@@ -5,33 +5,31 @@ import {
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useState } from "react";
 import { SongListItem } from "./SongListItem";
+import { Typography } from "@mui/material";
 
 type Props = {
-  searchResults: SpotifySongResponse;
+  searchResults: SpotifySongResponse | null;
 };
-const style = {
-  height: 30,
-  border: "1px solid green",
-  margin: 6,
-  padding: 8,
-};
+
 export const SongList = ({ searchResults }: Props) => {
   const [currentSearchResults, setCurrentSearchResults] =
     useState(searchResults);
 
   const [totalSongList, setTotalSongList] = useState(
-    searchResults.tracks.items
+    searchResults?.tracks.items || []
   );
 
   const fetchNextSongs = async () => {
-    const nextSongsResponse = await getNextSongs(currentSearchResults);
-    if (nextSongsResponse) {
-      setCurrentSearchResults(nextSongsResponse);
-      setTotalSongList([...totalSongList, ...nextSongsResponse.tracks.items]);
+    if (currentSearchResults) {
+      const nextSongsResponse = await getNextSongs(currentSearchResults);
+      if (nextSongsResponse) {
+        setCurrentSearchResults(nextSongsResponse);
+        setTotalSongList([...totalSongList, ...nextSongsResponse.tracks.items]);
+      }
     }
   };
 
-  return (
+  return currentSearchResults ? (
     <div id="scrollableDiv" style={{ height: 300, overflow: "auto" }}>
       <InfiniteScroll
         dataLength={totalSongList.length}
@@ -45,5 +43,7 @@ export const SongList = ({ searchResults }: Props) => {
         ))}
       </InfiniteScroll>
     </div>
+  ) : (
+    <Typography>No matching songs found.</Typography>
   );
 };

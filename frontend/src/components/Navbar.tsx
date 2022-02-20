@@ -2,11 +2,12 @@ import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../screens/Auth/contexts/UserContext";
 
 export const Navbar = () => {
   const auth = useAuth();
+  const navigate = useNavigate();
 
   return (
     <AppBar
@@ -26,7 +27,10 @@ export const Navbar = () => {
           <Link to="/favorites">Favorites</Link>
         </Button>
         <Button
-          onClick={() => auth?.logout()}
+          onClick={() => {
+            auth?.logout();
+            navigate("/");
+          }}
           variant="outlined"
           sx={{ my: 1, mx: 1.5 }}
         >

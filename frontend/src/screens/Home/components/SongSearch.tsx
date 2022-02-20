@@ -34,6 +34,7 @@ export const SongSearch = () => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const songName = data.get("song-name") as string;
+    setSearchResults(null);
     if (songName) {
       const soughtSongs = await getSongsByName(songName);
       await addTerms(songName);
@@ -43,7 +44,9 @@ export const SongSearch = () => {
   };
 
   const addTermToSearch = (selectedTerm: string) => {
-    setSearchInputText(searchInputText + selectedTerm);
+    setSearchInputText(
+      searchInputText + (searchInputText ? " " : "") + selectedTerm
+    );
   };
 
   return (
@@ -82,8 +85,8 @@ export const SongSearch = () => {
       </Box>
       {terms.length && (
         <Grid container spacing={1}>
-          {terms.map((term) => (
-            <Grid item>
+          {terms.map((term, index) => (
+            <Grid item key={index}>
               <Chip label={term} onClick={() => addTermToSearch(term)} />
             </Grid>
           ))}
