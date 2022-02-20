@@ -13,24 +13,21 @@ type UserContextValue = {
 const UserContext = createContext<UserContextValue | null>(null);
 
 const useAuth = () => {
-  const [loggedIn, setLoggedIn] = useState(false);
   const [user, setUser] = useState("");
 
   const isLoggedIn = () => {
-    if (!loggedIn) {
+    if (!user) {
       return !!localStorage.getItem("user");
     }
-    return loggedIn;
+    return true;
   };
 
   const logout = () => {
-    setUser("");
     localStorage.removeItem("user");
-    setLoggedIn(false);
+    setUser("");
   };
 
   const login = async (email: string, password: string) => {
-    setLoggedIn(true);
     try {
       await loginS(email, password);
       const token = localStorage.getItem("user");

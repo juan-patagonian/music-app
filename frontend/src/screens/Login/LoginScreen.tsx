@@ -23,7 +23,7 @@ export const LoginScreen = () => {
 
     if (email && password) {
       await auth?.login(email, password);
-      navigate("/home", { replace: true });
+      navigate("/", { replace: true });
     }
   };
 

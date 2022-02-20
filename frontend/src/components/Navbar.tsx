@@ -7,6 +7,7 @@ import useAuth from "../screens/Auth/contexts/UserContext";
 
 export const Navbar = () => {
   const auth = useAuth();
+
   return (
     <AppBar
       position="static"
