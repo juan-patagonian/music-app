@@ -28,16 +28,12 @@ const useAuth = () => {
   };
 
   const login = async (email: string, password: string) => {
-    try {
-      await loginS(email, password);
-      const token = localStorage.getItem("user");
-      if (token) {
-        setUser(token);
-      }
-      await getSpotifyAccessToken();
-    } catch (err) {
-      console.log(err);
+    await loginS(email, password);
+    const token = localStorage.getItem("user");
+    if (token) {
+      setUser(token);
     }
+    await getSpotifyAccessToken();
   };
 
   return {

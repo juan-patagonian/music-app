@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -13,6 +13,7 @@ import useAuth from "../Auth/contexts/UserContext";
 export const LoginScreen = () => {
   const auth = useAuth();
   const navigate = useNavigate();
+  const [error, setError] = useState("");
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -21,8 +22,12 @@ export const LoginScreen = () => {
     const password = data.get("password") as string;
 
     if (email && password) {
-      await auth?.login(email, password);
-      navigate("/", { replace: true });
+      try {
+        await auth?.login(email, password);
+        navigate("/", { replace: true });
+      } catch (err) {
+        setError(err as string);
+      }
     }
   };
 
@@ -63,6 +68,7 @@ export const LoginScreen = () => {
             id="password"
             autoComplete="current-password"
           />
+          {error && <Typography>{error}</Typography>}
           <Button
             type="submit"
             fullWidth

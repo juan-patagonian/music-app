@@ -63,6 +63,8 @@ export const SongSearch = () => {
               id="song-name"
               name="song-name"
               placeholder="Search a song"
+              autoComplete="false"
+              autoFocus={true}
               fullWidth
               value={searchInputText}
               onChange={(e) => setSearchInputText(e.target.value)}

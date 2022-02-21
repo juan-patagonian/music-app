@@ -1,4 +1,3 @@
-import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -7,8 +6,13 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { signup } from "../../services/auth.service";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export const RegisterScreen = () => {
+  const navigate = useNavigate();
+  const [error, setError] = useState("");
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -25,8 +29,9 @@ export const RegisterScreen = () => {
           password,
           repeatPassword,
         });
+        navigate("/login");
       } catch (err) {
-        console.log(err);
+        setError(err as string);
       }
     }
   };
@@ -82,9 +87,10 @@ export const RegisterScreen = () => {
             fullWidth
             name="repeatPassword"
             label="Confirm Password"
-            type="repeatPassword"
+            type="password"
             id="repeatPassword"
           />
+          {error && <Typography>{error}</Typography>}
           <Button
             type="submit"
             fullWidth
