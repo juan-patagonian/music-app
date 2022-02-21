@@ -15,6 +15,9 @@ services:
       - "3000:3000"
     environment:
       - DATABASE_URL=${DATABASE_URL}
+      - SPOTIFY_API_KEY=${SPOTIFY_API_KEY}
+      - SPOTIFY_CLIENT_ID=${SPOTIFY_CLIENT_ID}
+      - JWT_KEY=${JWT_KEY}
   frontend:
     build:
       dockerfile: Dockerfile

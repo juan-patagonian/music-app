@@ -40,5 +40,5 @@ export const removeFavoriteSong = async (req: Request, res: Response) => {
     }).exec();
   }
 
-  res.status(200).send();
+  return res.status(200).send();
 };

@@ -17,5 +17,5 @@ export const getFavoriteSongs = async (req: Request, res: Response) => {
     return res.status(400).send(`User#${userId} is not a valid user`);
   }
 
-  res.json(user.favoriteSongs ?? []);
+  return res.json(user.favoriteSongs ?? []);
 };

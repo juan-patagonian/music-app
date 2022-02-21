@@ -6,5 +6,6 @@ const router = express.Router();
 
 router.post("/register", register);
 router.post("/login", login);
+router.get("/ping", (req, res) => res.send("All ok"));
 
 export default router;

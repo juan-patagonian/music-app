@@ -6,11 +6,11 @@ export const login = async (req, res, next) => {
   passport.authenticate("local", async (err, user, options) => {
     try {
       if (!user) {
-        res.status(400).send(options.message);
+        return res.status(400).send(options.message);
       }
 
       if (err) {
-        res.status(400).send(err);
+        return res.status(400).send(err);
       }
 
       req.login(user, { session: false }, async (error) => {
@@ -22,7 +22,7 @@ export const login = async (req, res, next) => {
         return res.json({ token });
       });
     } catch (error) {
-      res.status(500).send();
+      return res.status(500).send();
     }
   })(req, res, next);
 };
