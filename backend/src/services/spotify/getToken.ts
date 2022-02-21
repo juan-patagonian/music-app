@@ -1,7 +1,6 @@
 import { Response } from "express";
 import { JWTRequest } from "../../types/JWTRequest";
 import axios from "axios";
-import Boom from "@hapi/boom";
 import { spotifyConfig } from "../../config/spotify";
 
 type Request = JWTRequest<never>;
@@ -21,22 +20,25 @@ export const getToken = async (req: Request, res: Response) => {
   const userId = req.user._id;
 
   if (!userId) {
-    return Boom.forbidden("No authorized user provided");
+    return res.status(403).send("No authorized user provided");
   }
 
-  const tokenData = await requestTokenFromSpotify();
+  try {
+    const tokenData = await requestTokenFromSpotify();
+    const tokenExpireDate = new Date();
+    tokenExpireDate.setSeconds(
+      tokenExpireDate.getSeconds() + Number(tokenData.expires_in)
+    );
 
-  const tokenExpireDate = new Date();
-  tokenExpireDate.setSeconds(
-    tokenExpireDate.getSeconds() + Number(tokenData.expires_in)
-  );
+    const responseTokenData = {
+      access_token: tokenData.access_token,
+      expiration_date: tokenExpireDate,
+    } as TokenResponse;
 
-  const responseTokenData = {
-    access_token: tokenData.access_token,
-    expiration_date: tokenExpireDate,
-  } as TokenResponse;
-
-  res.json(responseTokenData);
+    return res.json(responseTokenData);
+  } catch (err) {
+    return res.status(500).send("An unexpected error ocurred");
+  }
 };
 
 const requestTokenFromSpotify = async () => {
@@ -60,7 +62,6 @@ const requestTokenFromSpotify = async () => {
 
     return spotifyApiResponse.data;
   } catch (err) {
-    console.log(err);
-    return null;
+    throw new Error(err);
   }
 };

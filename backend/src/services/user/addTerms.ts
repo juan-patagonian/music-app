@@ -1,11 +1,7 @@
 import { Response } from "express";
 import { JWTRequest } from "../../types/JWTRequest";
-import {
-  AddFavoriteSongRequest,
-  validate as validateRequestParams,
-} from "../../dtos/song/AddFavoriteSongRequest.dto";
+import { AddFavoriteSongRequest } from "../../dtos/song/AddFavoriteSongRequest.dto";
 import { User } from "../../models/user";
-import Boom from "@hapi/boom";
 import { SearchTerm } from "../../types/user";
 
 type Request = JWTRequest<AddFavoriteSongRequest>;
@@ -14,13 +10,13 @@ export const addTerms = async (req: Request, res: Response) => {
   const userId = req.user._id;
 
   if (!userId) {
-    return Boom.forbidden("No authorized user provided");
+    return res.status(403).send("No authorized user provided");
   }
 
   const user = await User.findById(userId).exec();
 
   if (!user) {
-    return res.send(Boom.badData(`User#${userId} is not a valid user`));
+    return res.status(400).send(`User#${userId} is not a valid user`);
   }
 
   const terms = req.body.terms;

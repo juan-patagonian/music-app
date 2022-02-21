@@ -3,12 +3,14 @@ import jwt from "jsonwebtoken";
 import { jwtKey } from "../../config/jwt";
 
 export const login = async (req, res, next) => {
-  passport.authenticate("local", async (err, user, info) => {
+  passport.authenticate("local", async (err, user, options) => {
     try {
-      if (err || !user) {
-        const error = new Error("An error occurred.");
+      if (!user) {
+        res.status(400).send(options.message);
+      }
 
-        return next(error);
+      if (err) {
+        res.status(400).send(err);
       }
 
       req.login(user, { session: false }, async (error) => {
@@ -20,7 +22,7 @@ export const login = async (req, res, next) => {
         return res.json({ token });
       });
     } catch (error) {
-      return next(error);
+      res.status(500).send();
     }
   })(req, res, next);
 };
