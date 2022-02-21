@@ -31,9 +31,13 @@ const getFavoriteSongs = async () => {
     }
   );
 
-  const spotifySongsResponse = await getSongsByIds(data);
+  if (data.length) {
+    const spotifySongsResponse = await getSongsByIds(data);
 
-  return spotifySongsResponse.data.tracks;
+    return spotifySongsResponse.data.tracks;
+  }
+
+  return [];
 };
 
 export { addToFavorites, getFavoriteSongs };
