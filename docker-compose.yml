@@ -15,3 +15,11 @@ services:
       - "3000:3000"
     environment:
       - DATABASE_URL=${DATABASE_URL}
+  frontend:
+    build:
+      dockerfile: Dockerfile
+      context: frontend
+    depends_on:
+      - backend
+    ports:
+      - "5000:5000"
