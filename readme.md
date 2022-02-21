@@ -6,6 +6,8 @@
 
 ### Features
 
+This web app allows a registered user to search for songs using the Spotify API and save them to favorites.
+
 - Nodejs + Express Backend
 - MongoDB 4.2 database
 - JWT Authentication
@@ -38,4 +40,5 @@ If everything worked correctly you should be able to go to <http://localhost:300
 
 ### Additional notes
 
-- This docker-compose structure lacks volumes, so data saved to the database will not be persistently saved.
+- This docker-compose structure lacks volumes, so data saved to the database will not be persistently saved. It will be deleted once the container is removed.
+- I added basic endpoint-testing for auth endpoints. Some other functions could be added to test the other routes, but since they require JWT authentication I would need to do some more research before testing them.
