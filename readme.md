@@ -23,7 +23,8 @@ cd music-app
 code example.env
 ````
 
-You should uncomment this file's variables and set your own credentials. Spotify API will require a client ID and a personal token eventually. Now we can start running our containers. Standing in the project's root folder run the following:
+You should uncomment this file's variables and set your own credentials. Spotify API will eventually require a client ID and a personal token.
+With that out of the way we can start running our containers. Standing in the project's root folder run the following:
 
 ```bash
 docker-compose build
