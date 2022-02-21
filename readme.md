@@ -11,11 +11,29 @@
 - JWT Authentication
 - Mongoose as an abstraction layer to the DB
 - React frontend
-- Spotify Frontend API Calls
+- Spotify API Calls
 
-**Table of Contents**
+### Making things work
 
-[TOC]
+First, let's clone the repo and get to the environment file.
 
-##Docker-Compose
-Use `docker-compose up backend` to run the backend service, which will also run the mongodb service.
+```bash
+git clone git@github.com:juan-patagonian/music-app.git
+cd music-app
+code example.env
+````
+
+You should uncomment this file's variables and set your own credentials. Spotify API will require a client ID and a personal token eventually. Now we can start running our containers. Standing in the project's root folder run the following:
+
+```bash
+docker-compose build
+docker-compose up frontend
+````
+
+The first command builds the docker containers, while the second one starts the `frontend` service. Optionally you could change the service name to `backend` or `mongodb` to run the API or database respectively.
+
+If everything worked correctly you should be able to go to <http://localhost:3000/api/auth/ping> and see an "All ok" message from the backend. Additionaly the frontend service app should be running in <http://localhost:5000>.
+
+### Additional notes
+
+- This docker-compose structure lacks volumes, so data saved to the database will not be persistently saved.
